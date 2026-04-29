@@ -24,6 +24,11 @@
 # Secrets et fichiers volumineux
 .env
 **/*.pdf
-**/*.png
+
+# Images autorisées pour le README
+!chat-bot-emsi.png
 **/*.jpg
 **/*.jpeg
+# On ignore les autres png pour être sûr, sauf celle-là
+*.png
+!chat-bot-emsi.png
