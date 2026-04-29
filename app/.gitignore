@@ -1,0 +1,24 @@
+# Dossiers de bibliothèques et environnements
+**/venv/
+**/.venv/
+**/env/
+**/Lib/
+**/site-packages/
+**/Scripts/
+**/Include/
+
+# Caches Python
+**/__pycache__/
+**/*.pyc
+
+# IDE et Système
+**/.idea/
+**/.vscode/
+**/.gradle/
+**/build/
+.DS_Store
+
+# Données et Secrets
+.env
+**/chroma_db/
+**/*.pdf

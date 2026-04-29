@@ -1,0 +1,29 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Python / Streamlit
+**/venv/
+**/.venv/
+**/env/
+**/Lib/
+**/site-packages/
+**/Scripts/
+**/Include/
+**/__pycache__/
+**/*.pyc
+**/chroma_db/
+
+# Secrets et fichiers volumineux
+.env
+**/*.pdf
+**/*.png
+**/*.jpg
+**/*.jpeg
