@@ -1,104 +1,61 @@
-# EMSI Chatbot (RAG)
+# EMSI Assistant
 
-![EMSI Chatbot](./chat-bot-emsi.png)
+This repository contains two related components:
 
-Ce depot contient:
-- Une app Android (dossier `app/`).
-- Un chatbot RAG Streamlit base sur LangChain + ChromaDB + Groq (dossier `rag_streamlit/`).
+- An Android application in `app/`.
+- A document-question-answering prototype in `rag_streamlit/`, implemented with retrieval-augmented generation (RAG).
 
-## Objectif
-Ce projet met en place un chatbot base sur la technologie RAG (Retrieval-Augmented Generation) qui repond aux questions en s'appuyant sur la brochure EMSI (`Brochure-EMSI.pdf`).
+The Streamlit assistant answers questions using the EMSI brochure as its knowledge source.
 
-## Apercu technique (RAG)
-Flux RAG:
-1. Chargement du PDF `Brochure-EMSI.pdf`.
-2. Decoupage en chunks.
-3. Embeddings (Sentence Transformers).
-4. Indexation dans ChromaDB (persistant).
-5. Retrieval + generation via Groq (LLM).
+## RAG pipeline
 
-Technos principales:
-- Streamlit (UI)
-- LangChain (RAG)
-- ChromaDB (vector store)
-- Groq (LLM)
-- PyPDF (lecture PDF)
-- sentence-transformers (embeddings)
+1. Load and split `Brochure-EMSI.pdf` into text chunks.
+2. Generate embeddings with Sentence Transformers.
+3. Persist and search the vector index with ChromaDB.
+4. Retrieve relevant passages and send the context to a Groq-hosted language model.
+5. Present the response in a Streamlit chat interface.
 
-## Ce qui a ete fait
-- Creation d'un module Streamlit (`rag_streamlit/`) avec ingestion PDF, index Chroma et UI de chat.
-- Configuration centralisee (`rag_streamlit/config.py`) pour les chemins, le modele et les parametres.
-- Guide d'installation et d'execution pour un lancement rapide.
-- Ajout d'un `.env.example` pour proteger les secrets lors du push.
+LangChain coordinates the retrieval and generation steps; PyPDF is used to read the PDF.
 
-## Structure
-```
-EMSI_CHATBOT_LAZIM/
-  Brochure-EMSI.pdf
-  chat-bot-emsi.png
-  .env.example
-  rag_streamlit/
-    app.py
-    ingest.py
-    rag.py
-    config.py
-    requirements.txt
-    .env.example
-    README.md
-```
+## Run the Streamlit application
 
-## Quick start (apres un `git pull`)
-1. Copier l'exemple d'environnement.
-2. Installer les dependances.
-3. Indexer le PDF.
-4. Lancer l'UI Streamlit.
+Requirements: Python 3.10+, a Groq API key, and `Brochure-EMSI.pdf` at the repository root.
 
-## Installation (RAG Streamlit)
-Prerequis:
-- Python 3.10+
-- Cle API Groq
-- PDF `Brochure-EMSI.pdf` a la racine du depot
+From `rag_streamlit/`:
 
-Depuis `rag_streamlit/`:
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+Copy-Item .env.example .env
 ```
 
-## Configuration
-Le fichier d'exemple est ici:
-- `rag_streamlit/.env.example` (ou le `.env.example` a la racine)
+Add the key to `.env`:
 
-Copie-le en `.env` dans `rag_streamlit/` et ajoute ta cle:
 ```ini
-GROQ_API_KEY=VOTRE_CLE_ICI
+GROQ_API_KEY=your_key_here
 ```
 
-Le chemin PDF par defaut est `../Brochure-EMSI.pdf` (depuis `rag_streamlit/`).
+Build or refresh the local vector index, then launch the interface:
 
-## Lancer apres un pull (resume)
-Depuis `rag_streamlit/`:
 ```powershell
-.\.venv\Scripts\Activate.ps1
 python ingest.py
 streamlit run app.py
 ```
 
-## Lancer l'indexation
-Depuis `rag_streamlit/`:
-```powershell
-python ingest.py
+The index is generated locally from the brochure. Keep API keys in the local environment file and never commit them.
+
+## Repository layout
+
+```text
+app/                 Android application
+Brochure-EMSI.pdf    source document for the RAG assistant
+rag_streamlit/
+  app.py             Streamlit interface
+  ingest.py          document ingestion and indexing
+  rag.py             retrieval and generation
+  config.py          paths and model configuration
+  requirements.txt   Python dependencies
 ```
 
-## Lancer l'application
-Depuis `rag_streamlit/`:
-```powershell
-streamlit run app.py
-```
-
-## Test rapide
-Depuis `rag_streamlit/`:
-```powershell
-python run_local.py
-```
+For component-specific instructions, see `rag_streamlit/README.md`.
